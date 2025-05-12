@@ -8,10 +8,13 @@ class Controller:
         # the model, which implements the logic of the program and holds the data
         self._model = model
 
-    def handle_hello(self, e):
-        name = self._view.txt_name.value
-        if name is None or name == "":
-            self._view.create_alert("Inserire il nome")
-            return
+    def handleAnalizza(self, e):
         self._view.txt_result.controls.append(ft.Text(f"Hello, {name}!"))
         self._view.update_page()
+        return
+
+    def handleConnessi(self, e):
+        pass
+
+    def handleCerca(self, e):
+        pass
