@@ -23,20 +23,20 @@ class View(ft.UserControl):
         self._title = ft.Text("TdE_FlightDelays", color="blue", size=24)
         self._page.controls.append(self._title)
 
-        #ROW with some controls
+        # ROW with some controls
         # text field for the name
         self._txtInCMin = ft.TextField(
             label="N Compagnie min")
 
         self._btnAnalizza = ft.ElevatedButton(text="Analizza Aeroporti", on_click=self._controller.handleAnalizza)
         # row1
-        row1 = ft.Row([ft.Container(None, width = 250),
-                       ft.Container(self._txtInCMin, width = 250),
-                       ft.Container(self._btnAnalizza, width = 250)],
+        row1 = ft.Row([ft.Container(None, width=250),
+                       ft.Container(self._txtInCMin, width=250),
+                       ft.Container(self._btnAnalizza, width=250)],
                       alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row1)
 
-        self._ddAeroportoP = ft.Dropdown(label = "Aeroporto di Partenza")
+        self._ddAeroportoP = ft.Dropdown(label="Aeroporto di Partenza")
         self._btnConnessi = ft.ElevatedButton(text="Aeroporti connessi",
                                               on_click=self._controller.handleConnessi)
         row2 = ft.Row([ft.Container(None, width=250),
@@ -45,14 +45,18 @@ class View(ft.UserControl):
                       alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row2)
 
-        self._ddAeroportoD =  ft.Dropdown(label = "Aeroporto di Destinazione")
+        self._ddAeroportoD = ft.Dropdown(label="Aeroporto di Destinazione")
         self._txtInTratteMax = ft.TextField(label="N Tratte max")
-        self._btnCerca = ft.ElevatedButton(text = "Cerca itinerario",
+        self._btnCerca = ft.ElevatedButton(text="Cerca itinerario",
                                            on_click=self._controller.handleCerca)
+
+        self._btnPercorso = ft.ElevatedButton(text="Trova percorso",
+                                              on_click=self._controller.handlePercorso)
 
         row3 = ft.Row([ft.Container(self._ddAeroportoD, width=250),
                        ft.Container(self._txtInTratteMax, width=250),
-                       ft.Container(self._btnCerca, width=250)],
+                       ft.Container(self._btnCerca, width=250),
+                       ft.Container(self._btnPercorso, width=250)],
                       alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row3)
         # List View where the reply is printed
