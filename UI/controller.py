@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import flet as ft
 
 
@@ -91,7 +93,23 @@ class Controller:
         self._view.update_page()
 
     def handleCerca(self, e):
-        pass
+        v0 = self._choiceDDAeroportoP
+        v1 = self._choiceDDAeroportoD
+        t = self._view._txtInTratteMax.value
+        tInt = int(t)
+
+        tic = datetime.now()
+        path, scoreTot = self._model.getCamminoOttimo(v0, v1, tInt)
+        self._view.txt_result.controls.clear()
+        self._view.txt_result.controls.append(
+            ft.Text(f"Il percorso ottimo fra {v0} e {v1} è:"))
+        for p in path:
+            self._view.txt_result.controls.append(ft.Text(p))
+        self._view.txt_result.controls.append(
+            ft.Text(f"Score: {scoreTot}"))
+        self._view.txt_result.controls.append(
+            ft.Text(f"Percorso trovato in {datetime.now() - tic}"))
+        self._view.update_page()
 
     def fillDDNodes(self, allNodes):
         for n in allNodes:

@@ -1,3 +1,5 @@
+import copy
+
 import networkx as nx
 
 from database.DAO import DAO
@@ -5,11 +7,50 @@ from database.DAO import DAO
 
 class Model:
     def __init__(self):
+        self._bestObjFunction = 0
+        self._bestPath = []
         self._graph = nx.Graph()
         self._airports = DAO.getAllAirports()
         self._idMapAirports = {}
         for a in self._airports:
             self._idMapAirports[a.ID] = a
+
+    def getCamminoOttimo(self, v0, v1, t):  # t = numero massimo tratte
+        self._bestPath = []  # dove carico percorso migliore
+        self._bestObjFunction = 0
+
+        parziale = [v0]  # lista di aeroporti visualizzati
+
+        self._ricorsione(parziale, v1, t)
+
+        return self._bestPath, self._bestObjFunction
+
+    def _ricorsione(self, parziale, v1, t):
+        # verificare se parziale è una possibile soluzione
+        # verificare se parziale è meglio del best
+        # esco
+        if parziale[-1] == v1:  # ultimo aeroporto in parziale è l'aeroporto di arrivo
+            if self.getObjFun(parziale) > self._bestObjFunction:
+                # ho trovato una soluzione migliore
+                self._bestObjFunction = self.getObjFun(parziale)
+                self._bestPath = copy.deepcopy(parziale)
+        if len(parziale) == t+1:  # supero il limite
+            return
+
+        # Posso ancora aggiungere nodi
+        # prendo i vicini dell'ultimo nodo e aggiungo un nodo alla volta
+
+        for n in self._graph.neighbors(parziale[-1]):
+            if n not in parziale:  # nodo non visitato
+                parziale.append(n)
+                self._ricorsione(parziale, v1, t)
+                parziale.pop()
+
+    def getObjFun(self, listOfNodes):
+        objVal = 0
+        for i in range(0, len(listOfNodes) - 1):
+            objVal += self._graph[listOfNodes[i]][listOfNodes[i + 1]]["weight"]
+        return objVal
 
     def buildGraph(self, nMin):
         nodes = DAO.getAllNodes(nMin, self._idMapAirports)
@@ -62,6 +103,3 @@ class Model:
         # while path[0] != v0:
         #     path.insert(0, Mydict[path[0]])  # prendo ultimo elemento fino a quando non arrivo a v0
         return path
-
-
-
